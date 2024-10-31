@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>フラッシュ暗算</title>
+<link rel="icon" type="image/ico" href="img/favicon.ico">
+<link rel="apple-touch-icon" type="image/ico" href="img/favicon.png">
+<style>
+* {
+    margin:0;
+    padding:0;
+}
+.flash__inner,
+.reload {
+    background-color:#222;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width:100%;
+    height:100vh;
+}
+.flash__text{
+    display: block;
+    text-align: center;
+    width:100%;
+    height:max-content;
+    font-size: 10vw;
+    letter-spacing: 0.05em;
+    color:#00ff00;
+}
+.startBtn {
+    text-align: center;
+}
+button{
+    color:#fff;
+    background-color: rgba(81, 236, 50, 0.773);
+    font-size: 30px;
+    font-weight: 700;
+    padding:15px 60px;
+}
+.hidden{
+    display: none;
+}
+</style>
+</head>
+<body>
+    <div id="flash">
+        <div class="flash__inner">
+            <div>
+                <span id="flashMachine" class="flash__text">2桁×10<br>ﾌﾗｯｼｭ暗算</span>
+                <div class="startBtn">
+                    <button id="startBtn">スタート</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="retry" class="hidden">
+        <div class="reload">
+            <div class="retryBtn">
+                <button id="retryBtn">リトライ</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        i = 0;
+        totalAnswer = 0;
+
+        startBtn.addEventListener('click',()=>{
+            startBtn.classList.add('hidden');
+
+            function ten_random(){
+                const flashNumber = Math.floor(Math.random()*(100-10)+10);
+                console.log(flashNumber);
+                const machine = document.getElementById('flashMachine');
+                machine.textContent=flashNumber;
+                machine.style.fontSize="30vw";
+                totalAnswer += flashNumber;
+                i++;
+                if(i>9){//9＝9000ミリ秒後に停止
+                    clearInterval(timerID);
+                }
+            }
+            timerID = setInterval(ten_random,1000);
+
+            function finish(){
+                const machine = document.getElementById('flashMachine');
+                machine.textContent="終了";
+                
+                function answerRequest(){
+                    const flashGame = document.getElementById('flash');
+                    const retry = document.getElementById('retry');
+                    flashGame.classList.add('hidden');
+                    retry.classList.remove('hidden');
+                    console.log(totalAnswer);
+                    answer = prompt("答えはいくつですか？");
+                    if(answer == totalAnswer){
+                        alert("正解！");
+                    }else{
+                        alert("不正解！答えは"+totalAnswer+"です！");
+                    }
+                }
+                setTimeout(answerRequest,1000);
+            }
+            setTimerID = setTimeout(finish,11000);
+        });
+
+        retryBtn.addEventListener('click',()=>{
+            window.location.reload();
+        });
+    </script>
+</body>
+</html>
